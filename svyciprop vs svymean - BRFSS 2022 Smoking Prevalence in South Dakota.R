@@ -21,11 +21,11 @@ design <- svydesign(
   weights = ~`_LLCPWT`,
   data = sd)
 
-# Prevalence and CIs with svyciprops
-prev_prop <- svyciprop(~CURRENTUSE, design)
+# Prevalence and 95% CIs with svyciprops
+prev_prop <- svyciprop(~CURRENTUSE, design, na.rm=TRUE)
 print(prev_prop, digits = 6)  
 
-# Prevalence and CIs with svymeans
+# Prevalence and 95% CIs with svymeans
 prev_mean <- svymean(~CURRENTUSE, design, na.rm = TRUE)
 print(prev_mean, digits = 6)
 print(confint(prev_mean), digits = 6)

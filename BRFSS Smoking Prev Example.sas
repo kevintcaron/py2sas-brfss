@@ -31,17 +31,27 @@ run;
 
 
 /*conduct the weighted analysis with the SD subset recoded to eliminate nonrespnse*/
-PROC SURVEYFREQ DATA=library.Llcp2022_subset_recoded NOMCAR;
+PROC SURVEYFREQ DATA=library.Llcp2022_subset_recoded;
   STRATA _STSTR;
   CLUSTER _PSU;
   WEIGHT _LLCPWT;
   TABLES CURRENTUSE / ROW CL;
 RUN;
 
-/*conduct the weighted analysis using crosstab*/
-PROC CROSSTAB DATA=library.Llcp2022_subset_recoded DESIGN=WR;
-  NEST _STSTR _PSU;    /* Specify stratification and clustering */
-  WEIGHT _LLCPWT;      /* Specify survey weight */
-  TABLES CURRENTUSE;   /* Cross-tabulation of interest */
-  PRINT / STYLE=NORMAL; /* Request standard output */
+/*conduct the weighted means analysis with the SD subset recoded to eliminate nonrespnse*/
+PROC SURVEYMEANS DATA=library.Llcp2022_subset_recoded MEAN STDERR CLM;
+  STRATA _STSTR;              /* Stratification variable */
+  CLUSTER _PSU;               /* Primary Sampling Unit */
+  WEIGHT _LLCPWT;             /* Sampling weights */
+  VAR CURRENTUSE;             /* Variable of interest */
 RUN;
+
+
+
+/*conduct the weighted analysis using crosstab*/
+/*PROC CROSSTAB DATA=library.Llcp2022_subset_recoded DESIGN=WR;*/
+/*  NEST _STSTR _PSU;    /* Specify stratification and clustering */*/
+/*  WEIGHT _LLCPWT;      /* Specify survey weight */*/
+/*  TABLES CURRENTUSE;   /* Cross-tabulation of interest */*/
+/*  PRINT / STYLE=NORMAL; /* Request standard output */*/
+/*RUN;*/
